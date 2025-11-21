@@ -1,157 +1,156 @@
 # Discord Direct Message Bot
 
-Discord sunucunuzdaki üyelere toplu veya bireysel özel mesaj göndermenizi sağlayan bir bot.
+A bot that lets you send mass or individual direct messages to members in your Discord server.
 
-## Özellikler
+## Features
 
--  Toplu mesaj gönderme: Tüm sunucu üyelerine aynı anda mesaj gönderebilirsiniz
--  Bireysel mesaj gönderme: Belirli bir kullanıcıya mesaj gönderebilirsiniz
--  Placeholder desteği: Mesajlarınızı kişiselleştirebilirsiniz
--  Kalıcı mesaj depolama: Ayarladığınız mesajlar dosyaya kaydedilir, bot yeniden başlatılsa bile korunur
--  Modal ve input desteği: Mesaj ayarlama için iki farklı yöntem
--  Rate limiting: Toplu gönderimlerde güvenlik için otomatik gecikme
+* **Mass messaging:** Send a message to all server members at once
+* **Individual messaging:** Send a message to a specific user
+* **Placeholder support:** Personalize your messages with dynamic fields
+* **Persistent message storage:** Saved messages remain even after bot restarts
+* **Modal & input support:** Configure messages using either command inputs or modals
+* **Rate limiting:** Automatic delay for safe mass messaging
 
-## Gereksinimler
+## Requirements
 
--  Node.js 20.0.0 veya üzeri
--  Discord Bot Token
--  Discord Application Client ID
+* Node.js 20.0.0 or higher
+* Discord Bot Token
+* Discord Application Client ID
 
-## Kurulum
+## Installation
 
-1. Projeyi klonlayın veya indirin:
+1. Clone or download the project:
 
 ```bash
 git clone https://github.com/thrashxr/discordDirectMessage.git
 cd discordDirect
 ```
 
-2. Bağımlılıkları yükleyin:
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-3. `.env` dosyasını oluşturun:
+3. Create the `.env` file:
 
 ```bash
 cp .env.example .env
 ```
 
-4. `.env` dosyasını düzenleyin ve bot bilgilerinizi ekleyin:
+4. Edit the `.env` file and add your bot details:
 
 ```
 BOT_TOKEN=your_bot_token_here
 CLIENT_ID=your_client_id_here
 ```
 
-5. Botu başlatın:
+5. Start the bot:
 
 ```bash
 npm start
 ```
 
-## Komutlar
+## Commands
 
 ### `/setmessage`
 
-Gönderilecek mesaj içeriğini ayarlar. İki yöntemle kullanılabilir:
+Sets the message content to be sent. Can be used in two ways:
 
--  Input ile: Komut parametresi olarak mesajı yazabilirsiniz
--  Modal ile: Parametre boş bırakıldığında modal pencere açılır
+* **With input:** Provide the message directly as a command parameter
+* **With modal:** Leave the parameter empty to open a modal window
 
-**Yetki:** Administrator
+**Permission:** Administrator
 
 ### `/sendtoall`
 
-Ayarladığınız mesajı sunucudaki tüm üyelere gönderir. Botlar ve botun kendisi hariç tutulur.
+Sends the configured message to all members in the server (excluding bots and the bot itself).
 
-**Yetki:** Administrator
-
-**Not:** Her mesaj arasında 1 saniye gecikme vardır (rate limiting).
+**Permission:** Administrator
+**Note:** Includes a 1-second delay between messages (rate limiting).
 
 ### `/sendtouser`
 
-Ayarladığınız mesajı belirli bir kullanıcıya gönderir.
+Sends the configured message to a specific user.
 
-**Yetki:** Administrator
+**Permission:** Administrator
 
 ### `/help`
 
-Placeholder'lar ve komutlar hakkında bilgi gösterir.
+Shows information about placeholders and available commands.
 
-**Yetki:** Herkes
+**Permission:** Everyone
 
-## Placeholder'lar
+## Placeholders
 
-Mesajlarınızda aşağıdaki placeholder'ları kullanabilirsiniz:
+You can use the following placeholders in your messages:
 
--  `{username}` - Kullanıcının kullanıcı adı
--  `{mention}` - Kullanıcıyı mention et
--  `{displayName}` - Kullanıcının görünen adı (sunucuda ayarlanmışsa)
--  `{guild}` - Sunucu adı
--  `{memberCount}` - Sunucudaki toplam üye sayısı
+* `{username}` – User’s username
+* `{mention}` – Mentions the user
+* `{displayName}` – User’s server-specific display name
+* `{guild}` – Server name
+* `{memberCount}` – Total number of members in the server
 
-### Örnek Kullanım
-
-```
-Merhaba {mention}!
-{guild} sunucusuna hoş geldin!
-Şu anda {memberCount} üyemiz var.
-```
-
-Bu mesaj gönderildiğinde:
+### Example Usage
 
 ```
-Merhaba @Kullanıcı!
-Discord Sunucusu sunucusuna hoş geldin!
-Şu anda 150 üyemiz var.
+Hello {mention}!
+Welcome to {guild}!
+We currently have {memberCount} members.
 ```
 
-## Proje Yapısı
+When sent, it becomes:
+
+```
+Hello @User!
+Welcome to Discord Server!
+We currently have 150 members.
+```
+
+## Project Structure
 
 ```
 discordDirect/
-├── commands/          # Slash komutları
+├── commands/          # Slash commands
 │   ├── help.js
 │   ├── sendToAll.js
 │   ├── sendToUser.js
 │   └── setMessage.js
-├── utils/             # Yardımcı fonksiyonlar
+├── utils/             # Utility functions
 │   ├── messageFormatter.js
 │   └── messageStorage.js
-├── data/              # Mesaj depolama (otomatik oluşturulur)
+├── data/              # Message storage (auto-generated)
 │   └── message.json
-├── index.js           # Ana bot dosyası
+├── index.js           # Main bot file
 ├── package.json
-└── .env               # Bot token ve client ID (oluşturulmalı)
+└── .env               # Bot token and client ID (must be created)
 ```
 
-## Notlar
+## Notes
 
--  Mesajlar `data/message.json` dosyasına kaydedilir
--  `.env` dosyası git'e commit edilmez (güvenlik için)
--  `data/` klasörü git'e commit edilmez
--  Bot yeniden başlatıldığında mesajlar korunur
+* Messages are stored in `data/message.json`
+* The `.env` file is not committed to git (for security)
+* The `data/` folder is not committed to git
+* Messages persist after bot restarts
 
-## Hata Yönetimi
+## Error Handling
 
-Bot, aşağıdaki durumları otomatik olarak yönetir:
+The bot automatically handles:
 
--  Kullanıcıların DM'lerinin kapalı olması
--  Botun engellenmiş olması
--  Ağ hataları
+* Users with closed DMs
+* Being blocked by users
+* Network errors
 
-Başarılı ve başarısız gönderim sayıları raporlanır.
+It reports the number of successful and failed deliveries.
 
-## Lisans
+## License
 
-Bu proje ISC lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakın.
+This project is licensed under the ISC License. See the `LICENSE` file for details.
 
-## Katkıda Bulunma
+## Contributing
 
-Pull request'ler memnuniyetle karşılanır. Büyük değişiklikler için önce bir issue açarak neyi değiştirmek istediğinizi tartışın.
+Pull requests are welcome. For major changes, open an issue first to discuss what you want to change.
 
-## Destek
+## Support
 
-Sorunlar için GitHub Issues kullanabilirsiniz.
+Use GitHub Issues for problems or questions.
