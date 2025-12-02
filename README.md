@@ -1,156 +1,102 @@
 # Discord Direct Message Bot
 
-A bot that lets you send mass or individual direct messages to members in your Discord server.
+**Mass-DM & broadcast tool for Discord servers — personalized, safe, and easy to use.**
 
-## Features
+[![Node.js CI](https://img.shields.io/badge/Node-v20%2B-brightgreen)]()  
+[![License: ISC](https://img.shields.io/badge/license-ISC-blue.svg)]()
 
-* **Mass messaging:** Send a message to all server members at once
-* **Individual messaging:** Send a message to a specific user
-* **Placeholder support:** Personalize your messages with dynamic fields
-* **Persistent message storage:** Saved messages remain even after bot restarts
-* **Modal & input support:** Configure messages using either command inputs or modals
-* **Rate limiting:** Automatic delay for safe mass messaging
+---
 
-## Requirements
+## 🚀 What is this?
 
-* Node.js 20.0.0 or higher
-* Discord Bot Token
-* Discord Application Client ID
+discordDirectMessage is a simple yet powerful Discord bot that helps server owners and admins send **custom direct messages (DMs)** to:
 
-## Installation
+- All server members at once (mass broadcast)  
+- A specific user individually  
 
-1. Clone or download the project:
+This solves the classic problem: public announcements get lost, @everyone pings get ignored, and moderators spend too much time messaging manually.
+
+Perfect for community announcements, onboarding new members, announcements, reminders and more.
+
+---
+
+## ✅ Features
+
+- **Mass messaging** (send the same DM to all members)  
+- **Individual messaging** (send DM to a specific user)  
+- **Dynamic placeholders** for personalization:  
+  - `{username}` — user’s username  
+  - `{displayName}` — user’s nickname in the server  
+  - `{mention}` — mention the user  
+  - `{guild}` — server name  
+  - `{memberCount}` — server member count  
+- **Persistent storage** — message content is saved even if the bot restarts  
+- **Modal & input support** — set message via slash command or modal dialog  
+- **Rate-limited safe mass messaging** (delay between messages to avoid spam/rate-limit issues)  
+- **Admin-only permissions** for mass/individual messaging (security)  
+- Simple setup & zero-dependency complexity beyond Node.js & Discord bot essentials  
+
+---
+
+## 🧰 Requirements
+
+- Node.js 20 or higher  
+- A valid Discord Bot Token + Client ID  
+- Permissions: ADMINISTRATOR (or manage roles/permissions to allow bot commands)  
+
+---
+
+## 📦 Installation & Setup
 
 ```bash
-git clone https://github.com/thrashxr/discordDirectMessage.git
-cd discordDirect
-```
+git clone https://github.com/thrashxr/discordDirectMessage.git  
+cd discordDirectMessage  
+npm install  
 
-2. Install dependencies:
+# Copy .env example and configure
+cp .env.example .env  
 
-```bash
-npm install
-```
+# Edit .env to add:
+# BOT_TOKEN=<your_discord_bot_token>
+# CLIENT_ID=<your_discord_application_client_id>
 
-3. Create the `.env` file:
-
-```bash
-cp .env.example .env
-```
-
-4. Edit the `.env` file and add your bot details:
-
-```
-BOT_TOKEN=your_bot_token_here
-CLIENT_ID=your_client_id_here
-```
-
-5. Start the bot:
-
-```bash
 npm start
-```
+````
 
-## Commands
+That’s it — bot is ready and will register slash commands automatically.
 
-### `/setmessage`
+---
 
-Sets the message content to be sent. Can be used in two ways:
+## 📝 Commands
 
-* **With input:** Provide the message directly as a command parameter
-* **With modal:** Leave the parameter empty to open a modal window
+| Command                 | Description                                                                         |
+| ----------------------- | ----------------------------------------------------------------------------------- |
+| `/setmessage <message>` | Save your broadcast message (accepts direct input)                                  |
+| `/setmessage`           | (no arg) — opens a modal to type the message content                                |
+| `/sendtoall`            | Send the saved message to all server members (excluding bots & self) — rate-limited |
+| `/sendtouser <@user>`   | Send the saved message to a specific user                                           |
+| `/help`                 | Show available placeholders and command help                                        |
 
-**Permission:** Administrator
+---
 
-### `/sendtoall`
+## 🎯 Use Cases – Who This Helps
 
-Sends the configured message to all members in the server (excluding bots and the bot itself).
+* Server admins needing to broadcast announcements, updates, or onboarding messages
+* Community managers wanting personalized DMs instead of public pings
+* Educational servers, gaming clans, events, giveaways — wherever direct member reach out is needed
+* Anyone needing a simple, ready-to-use, self-hosted Discord DM tool
 
-**Permission:** Administrator
-**Note:** Includes a 1-second delay between messages (rate limiting).
+---
 
-### `/sendtouser`
+## 📄 License
 
-Sends the configured message to a specific user.
+This project is licensed under the **ISC License**. See [LICENSE](LICENSE) for details.
 
-**Permission:** Administrator
+---
 
-### `/help`
+## 👍 Want a Custom Solution?
 
-Shows information about placeholders and available commands.
+Need more than basic mass-messaging? I also build customized Discord bots: dashboards, automation pipelines, database integrations, moderation tools, APIs — tailored to your server’s needs.
+Feel free to open an issue or reach out via GitHub / email.
 
-**Permission:** Everyone
-
-## Placeholders
-
-You can use the following placeholders in your messages:
-
-* `{username}` – User’s username
-* `{mention}` – Mentions the user
-* `{displayName}` – User’s server-specific display name
-* `{guild}` – Server name
-* `{memberCount}` – Total number of members in the server
-
-### Example Usage
-
-```
-Hello {mention}!
-Welcome to {guild}!
-We currently have {memberCount} members.
-```
-
-When sent, it becomes:
-
-```
-Hello @User!
-Welcome to Discord Server!
-We currently have 150 members.
-```
-
-## Project Structure
-
-```
-discordDirect/
-├── commands/          # Slash commands
-│   ├── help.js
-│   ├── sendToAll.js
-│   ├── sendToUser.js
-│   └── setMessage.js
-├── utils/             # Utility functions
-│   ├── messageFormatter.js
-│   └── messageStorage.js
-├── data/              # Message storage (auto-generated)
-│   └── message.json
-├── index.js           # Main bot file
-├── package.json
-└── .env               # Bot token and client ID (must be created)
-```
-
-## Notes
-
-* Messages are stored in `data/message.json`
-* The `.env` file is not committed to git (for security)
-* The `data/` folder is not committed to git
-* Messages persist after bot restarts
-
-## Error Handling
-
-The bot automatically handles:
-
-* Users with closed DMs
-* Being blocked by users
-* Network errors
-
-It reports the number of successful and failed deliveries.
-
-## License
-
-This project is licensed under the ISC License. See the `LICENSE` file for details.
-
-## Contributing
-
-Pull requests are welcome. For major changes, open an issue first to discuss what you want to change.
-
-## Support
-
-Use GitHub Issues for problems or questions.
+---
